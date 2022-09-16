@@ -1,26 +1,39 @@
-import { Button } from '@mui/material';
+import { Button, TextField } from '@mui/material';
 import axios from 'axios';
+import { StoryCard } from 'components/StoryCard';
 import { useState } from 'react';
+import { Story } from 'models/story.model';
 
 const baseUrl = 'http://localhost:3000';
 
 function App() {
-  const [count, setCount] = useState(0);
+  const [stories, setStories] = useState([] as Story[]);
 
-  const callApi = async () => {
-    // call /helloToy endpoint with axios
-    const r = (await axios.get(`${baseUrl}/helloToy`)).data;
-    console.log(r);
+  const { fetchStories } = useStories();
+
+  const handleClick = async () => {
+    const r = await fetchStories();
+
+    setStories(r);
   };
-
-  console.log('helo');
 
   return (
     <div className="App">
-      <Button onClick={callApi}>hello world</Button>
-      Hello toy is very cool person{' '}
+      <TextField multiline rows={4} />
+      <Button onClick={handleClick}>hello world</Button>
+      {stories.map((story) => (
+        <StoryCard key={story.id} story={story} />
+      ))}
     </div>
   );
 }
 
 export default App;
+
+const useStories = () => {
+  const fetchStories = async () => {
+    return (await axios.get(`${baseUrl}/Stories`)).data as Story[];
+  };
+
+  return { fetchStories };
+};

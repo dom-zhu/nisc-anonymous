@@ -7,7 +7,7 @@ import {
 
 @Entity()
 export class Story {
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn('uuid')
   id: number;
 
   @Column()
