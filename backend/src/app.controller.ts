@@ -1,17 +1,23 @@
-import { Controller, Get } from '@nestjs/common';
-import { AppService } from './app.service';
+import { Body, Controller, Get, Post } from '@nestjs/common';
+import { ApiProperty } from '@nestjs/swagger';
+import { StoriesService } from './stories.service';
+
+class AddStoryRequest {
+  @ApiProperty()
+  content: string;
+}
 
 @Controller()
-export class AppController {
-  constructor(private readonly appService: AppService) {}
+export class StoriesController {
+  constructor(private readonly storiesService: StoriesService) {}
 
-  @Get()
-  getHello(): string {
-    return this.appService.getHello();
+  @Get('/stories')
+  getStories() {
+    return this.storiesService.getStories();
   }
 
-  @Get('/helloToy')
-  hi(): string {
-    return 'Hello Toy';
+  @Post('/story')
+  addStory(@Body() body: AddStoryRequest) {
+    return this.storiesService.addStory(body.content);
   }
 }
