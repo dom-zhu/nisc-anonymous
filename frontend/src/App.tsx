@@ -1,39 +1,53 @@
-import { Button, TextField } from '@mui/material';
-import axios from 'axios';
+import { Box, Button, TextField } from '@mui/material';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { StoryCard } from 'components/StoryCard';
 import { useState } from 'react';
-import { Story } from 'models/story.model';
+import { useStories } from 'useStories';
 
-const baseUrl = 'http://localhost:3000';
+const queryClient = new QueryClient();
 
 function App() {
-  const [stories, setStories] = useState([] as Story[]);
-
-  const { fetchStories } = useStories();
-
-  const handleClick = async () => {
-    const r = await fetchStories();
-
-    setStories(r);
-  };
-
   return (
-    <div className="App">
-      <TextField multiline rows={4} />
-      <Button onClick={handleClick}>hello world</Button>
-      {stories.map((story) => (
-        <StoryCard key={story.id} story={story} />
-      ))}
-    </div>
+    <QueryClientProvider client={queryClient}>
+      <Home />
+    </QueryClientProvider>
   );
 }
 
 export default App;
 
-const useStories = () => {
-  const fetchStories = async () => {
-    return (await axios.get(`${baseUrl}/Stories`)).data as Story[];
+const Home = () => {
+  const [text, setText] = useState('');
+
+  const { storiesQuery, submitStoryMutation } = useStories();
+
+  const handleClick = async () => {
+    submitStoryMutation.mutate(text);
   };
 
-  return { fetchStories };
+  const stories =
+    storiesQuery.data?.filter((story) => story.parentId === null) ?? [];
+
+  return (
+    <Box>
+      <Box
+        sx={{ marginBottom: 2, display: 'flex', alignItems: 'center', gap: 2 }}
+      >
+        <TextField
+          onChange={(e) => setText(e.target.value)}
+          multiline
+          rows={4}
+        />
+        <Button variant="contained" onClick={handleClick}>
+          Submit post
+        </Button>
+      </Box>
+
+      <Box display="flex" gap={2} flexWrap="wrap">
+        {stories.map((story) => (
+          <StoryCard key={story.id} story={story} />
+        ))}
+      </Box>
+    </Box>
+  );
 };

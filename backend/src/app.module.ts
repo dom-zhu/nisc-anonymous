@@ -3,7 +3,7 @@ import { StoriesController } from './app.controller';
 import { StoriesService } from './stories.service';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Story } from 'src/models/entities/story.entitiy';
+import { Comment } from 'src/models/entities/comment.entity';
 
 @Module({
   imports: [
@@ -24,7 +24,7 @@ import { Story } from 'src/models/entities/story.entitiy';
         synchronize: true,
       }),
     }),
-    TypeOrmModule.forFeature([Story]),
+    TypeOrmModule.forFeature([Comment]),
   ],
   controllers: [StoriesController],
   providers: [StoriesService],

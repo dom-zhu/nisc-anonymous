@@ -1,5 +1,6 @@
 export interface Story {
-  id: number;
+  id: string;
   content: string;
   date: string;
+  parentId: string;
 }
