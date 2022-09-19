@@ -20,7 +20,7 @@ export const StoryCard = ({ story }: { story: Story }) => {
     },
   });
 
-  const handleClick = () => {
+  const handleAddCommentClick = () => {
     submitCommentMutation.mutate({ comment, storyId: story.id });
   };
 
@@ -35,6 +35,7 @@ export const StoryCard = ({ story }: { story: Story }) => {
         display: 'flex',
         flexDirection: 'column',
         padding: 3,
+        backgroundColor: '#f5f5f5',
       }}
     >
       <span>{story.date}</span>
@@ -54,7 +55,7 @@ export const StoryCard = ({ story }: { story: Story }) => {
             multiline
             maxRows={4}
           />
-          <Button variant="contained" onClick={handleClick}>
+          <Button variant="contained" onClick={handleAddCommentClick}>
             Add comment
           </Button>
         </Box>

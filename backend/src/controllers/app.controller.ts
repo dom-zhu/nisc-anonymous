@@ -1,6 +1,6 @@
 import { Body, Controller, Get, Param, Post } from '@nestjs/common';
-import { ApiProperty } from '@nestjs/swagger';
-import { StoriesService } from './stories.service';
+import { ApiProperty, ApiTags } from '@nestjs/swagger';
+import { StoriesService } from 'src/services/stories.service';
 
 class AddStoryRequest {
   @ApiProperty()
@@ -12,6 +12,7 @@ class AddCommentRequest {
   content: string;
 }
 
+@ApiTags('Stories')
 @Controller()
 export class StoriesController {
   constructor(private readonly storiesService: StoriesService) {}
@@ -27,7 +28,7 @@ export class StoriesController {
   }
 
   @Post('/story/:id/comment')
-  addStoryComment(@Body() body: AddStoryRequest, @Param('id') id: string) {
+  addStoryComment(@Body() body: AddCommentRequest, @Param('id') id: string) {
     return this.storiesService.addStoryComment({
       content: body.content,
       storyId: id,

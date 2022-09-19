@@ -1,9 +1,14 @@
 import { Module } from '@nestjs/common';
-import { StoriesController } from './app.controller';
-import { StoriesService } from './stories.service';
+import { StoriesService } from './services/stories.service';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Comment } from 'src/models/entities/comment.entity';
+import { StoriesController } from 'src/controllers/app.controller';
+import { AuthController } from 'src/controllers/auth.controller';
+import { AuthService } from 'src/services/auth.service';
+import { Token } from 'src/models/entities/token.entity';
+import { Answer } from 'src/models/entities/answer.entity';
+import { AnswerService } from 'src/services/answer.service';
 
 @Module({
   imports: [
@@ -24,9 +29,9 @@ import { Comment } from 'src/models/entities/comment.entity';
         synchronize: true,
       }),
     }),
-    TypeOrmModule.forFeature([Comment]),
+    TypeOrmModule.forFeature([Comment, Token, Answer]),
   ],
-  controllers: [StoriesController],
-  providers: [StoriesService],
+  controllers: [StoriesController, AuthController],
+  providers: [StoriesService, AuthService, AnswerService],
 })
 export class AppModule {}

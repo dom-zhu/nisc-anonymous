@@ -1,5 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { fetchStories, submitComment, submitStory } from 'api';
+import { fetchStories, submitStory } from 'api';
 
 export const useStories = () => {
   const queryClient = useQueryClient();
